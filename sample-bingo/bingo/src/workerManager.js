@@ -44,7 +44,7 @@ define(["require", "exports"], function (require, exports) {
             if (!this._client) {
                 this._worker = monaco.editor.createWebWorker({
                     // module that exports the create() method and returns a `TypeScriptWorker` instance
-                    moduleId: 'vs/language/typescript/src/worker',
+                    moduleId: location.pathname + '/bingo/src/worker',
                     label: this._modeId,
                     // passed in to the create() method
                     createData: {
