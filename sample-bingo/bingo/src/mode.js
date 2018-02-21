@@ -1,43 +1,15 @@
-define(["require", "exports", "./tokenization", "./workerManager", "./languageFeatures"], function (require, exports, tokenization_1, workerManager_1, languageFeatures) {
+define(["require", "exports", "./tokenization", "./workerManager", "./languageFeatures"], function (require, exports, tokenization, workerManager, languageFeatures) {
     /*---------------------------------------------------------------------------------------------
      *  Copyright (c) Microsoft Corporation. All rights reserved.
      *  Licensed under the MIT License. See License.txt in the project root for license information.
      *--------------------------------------------------------------------------------------------*/
     'use strict';
     Object.defineProperty(exports, "__esModule", { value: true });
-    // var javaScriptWorker;
-    // var typeScriptWorker;
     var bingoScriptWorker;
-    // function setupTypeScript(defaults) {
-    //     typeScriptWorker = setupMode(defaults, 'typescript', tokenization_1.Language.TypeScript);
-    // }
-    // exports.setupTypeScript = setupTypeScript;
-    // function setupJavaScript(defaults) {
-    //     javaScriptWorker = setupMode(defaults, 'javascript', tokenization_1.Language.EcmaScript5);
-    // }
-    // exports.setupJavaScript = setupJavaScript;
     function setupBingoScript(defaults) {
-        bingoScriptWorker = setupMode(defaults, 'bingoscript', tokenization_1.Language.TypeScript);
+        bingoScriptWorker = setupMode(defaults, 'bingoscript', tokenization.Language.TypeScript);
     }
     exports.setupBingoScript = setupBingoScript;
-    // function getJavaScriptWorker() {
-    //     return new monaco.Promise(function (resolve, reject) {
-    //         if (!javaScriptWorker) {
-    //             return reject("JavaScript not registered!");
-    //         }
-    //         resolve(javaScriptWorker);
-    //     });
-    // }
-    // exports.getJavaScriptWorker = getJavaScriptWorker;
-    // function getTypeScriptWorker() {
-    //     return new monaco.Promise(function (resolve, reject) {
-    //         if (!typeScriptWorker) {
-    //             return reject("TypeScript not registered!");
-    //         }
-    //         resolve(typeScriptWorker);
-    //     });
-    // }
-    // exports.getTypeScriptWorker = getTypeScriptWorker;
     function getBingoScriptWorker() {
         return new monaco.Promise(function (resolve, reject) {
             if (!bingoScriptWorker) {
@@ -49,7 +21,7 @@ define(["require", "exports", "./tokenization", "./workerManager", "./languageFe
     exports.getBingoScriptWorker = getBingoScriptWorker;
     function setupMode(defaults, modeId, language) {
         var disposables = [];
-        var client = new workerManager_1.WorkerManager(modeId, defaults);
+        var client = new workerManager.WorkerManager(modeId, defaults);
         disposables.push(client);
         var worker = function (first) {
             var more = [];
@@ -69,7 +41,7 @@ define(["require", "exports", "./tokenization", "./workerManager", "./languageFe
         disposables.push(monaco.languages.registerOnTypeFormattingEditProvider(modeId, new languageFeatures.FormatOnTypeAdapter(worker)));
         disposables.push(new languageFeatures.DiagnostcsAdapter(defaults, modeId, worker));
         disposables.push(monaco.languages.setLanguageConfiguration(modeId, richEditConfiguration));
-        disposables.push(monaco.languages.setTokensProvider(modeId, tokenization_1.createTokenizationSupport(language)));
+        disposables.push(monaco.languages.setTokensProvider(modeId, tokenization.createTokenizationSupport(language)));
         return worker;
     }
     var richEditConfiguration = {
