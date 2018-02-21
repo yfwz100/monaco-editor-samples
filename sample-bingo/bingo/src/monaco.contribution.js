@@ -96,14 +96,15 @@ define(["require", "exports", "vs/editor/editor.main"], function (require, expor
         mimetypes: ['text/bingoscript']
     });
     monaco.languages.onLanguage('bingoscript', function () {
-        require(['bingo/src/mode'], function (mode) { return mode.setupBingoScript(bingoscriptDefaults); });
+        require(['bingo/src/mode'], function (mode) {
+            return mode.setupBingoScript(bingoscriptDefaults);
+        });
     });
 
     function getBingoScriptWorker() {
         return new monaco.Promise(function (resolve, reject) {
-            withMode(function (mode) {
-                mode.getBingoScriptWorker()
-                    .then(resolve, reject);
+            require(['bingo/src/mode'], function (mode) {
+                mode.getBingoScriptWorker().then(resolve, reject);
             });
         });
     }
